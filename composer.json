@@ -1,0 +1,12 @@
+{
+  "name": "iScepsis/usermeister",
+  "description": "Creating users is fun!",
+  "minimum-stability": "stable",
+  "license": "MIT",
+  "authors": [
+    {
+      "name": "f.senin",
+      "email": "paradoxsepsis@gmail.com"
+    }
+  ]
+}
