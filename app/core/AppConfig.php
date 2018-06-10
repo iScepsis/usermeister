@@ -7,6 +7,8 @@ namespace app\core;
 abstract class AppConfig
 {
     public $applicationName = '';
+    public $defaultController = '';
+    public $defaultAction = '';
 
     public function __construct(){
         try {
@@ -15,14 +17,15 @@ abstract class AppConfig
         } catch (\Exception $e) {
             die('Config error: ' . $e->getMessage() . ' ');
         }
-
     }
 
     /**
-     * Проверка конфигурации на заполнеие обязательных полей
+     * Проверка конфигурации на заполнение обязательных полей
      * @throws \Exception
      */
     public function checkConfiguration():void {
-        if (empty($this->applicationName)) throw new \Exception('Incorrect config! Application Name must be set!');
+        if (empty($this->applicationName)) throw new \Exception('Application Name must be set!');
+        if (empty($this->applicationName)) throw new \Exception('Default Controller must be set!');
+        if (empty($this->applicationName)) throw new \Exception('Default Action must be set!');
     }
 }

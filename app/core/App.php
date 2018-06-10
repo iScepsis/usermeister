@@ -13,6 +13,8 @@ class App
     }
 
     public function start(){
-
+        Router::$defaultController = $this->config->defaultController;
+        Router::$defaultAction = $this->config->defaultAction;
+        Router::run();
     }
 }
