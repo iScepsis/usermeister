@@ -7,19 +7,37 @@ use controllers\NotFoundController;
 
 class Router
 {
+    /**
+     * @var string контроллер который вызывается по умолчанию если не передавалось имя конкретного контроллера
+     */
     public static $defaultController = '';
+    /**
+     * @var string экшен который будет вызван по умолчанию если не передавалось имя конкретного экшена
+     */
     public static $defaultAction = '';
-
+    /**
+     * @var array url распарсенный на части
+     */
     public static $url = [];
+    /**
+     * @var string имя текущего контроллера
+     */
+    public static $controller = '';
+    /**
+     * @var string имя текущего экшена
+     */
+    public static $action = '';
 
-    protected static $controller;
-    protected static $action;
-
+    /**
+     * Разбираем url и запускаем вызываемый контроллер и экшен
+     */
     public static function run(){
         self::_parseUri();
         $controller = self::_getController();
         $action = self::_getAction($controller);
-        $controller->$action();
+        $controller->beforeAction();
+        echo $controller->$action();
+        $controller->afterAction();
     }
 
     /**

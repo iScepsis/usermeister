@@ -8,7 +8,13 @@ use app\mvc\Controller;
 
 class UsersController extends Controller
 {
+    /**
+     * @return string
+     * @throws \Exception
+     */
     public function index(){
-        echo "It's work!";
+
+        return $this->render('index', ['bad' => 3]);
+        //echo "It's work!";
     }
 }
