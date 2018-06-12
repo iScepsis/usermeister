@@ -5,6 +5,7 @@ namespace controllers;
 
 
 use app\mvc\Controller;
+use models\User;
 
 class UsersController extends Controller
 {
@@ -13,8 +14,7 @@ class UsersController extends Controller
      * @throws \Exception
      */
     public function index(){
-
-        return $this->render('index', ['bad' => 3]);
-        //echo "It's work!";
+        $user = new User();
+        return $this->render('index', ['users' => $user->findAll()]);
     }
 }

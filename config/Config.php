@@ -11,5 +11,10 @@ class Config extends AppConfig
     public $defaultController = 'user';
     public $defaultAction = 'index';
 
-    public $db = [];
+    public static $db = [
+        'host' => 'localhost',
+        'dbname' => 'usermeister',
+        'user' => 'usermeister',
+        'pass' => 'Qwe_123'
+    ];
 }
