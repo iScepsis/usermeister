@@ -36,7 +36,7 @@ abstract class AppConfig
      */
     public function checkConfiguration():void {
         if (empty($this->applicationName)) throw new \Exception('Application Name must be set!');
-        if (empty($this->applicationName)) throw new \Exception('Default Controller must be set!');
-        if (empty($this->applicationName)) throw new \Exception('Default Action must be set!');
+        if (empty($this->defaultController)) throw new \Exception('Default Controller must be set!');
+        if (empty($this->defaultAction)) throw new \Exception('Default Action must be set!');
     }
 }
