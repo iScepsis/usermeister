@@ -8,7 +8,7 @@ use app\core\AppConfig;
 class Config extends AppConfig
 {
     public $applicationName = 'usermeister';
-    public $defaultController = 'user';
+    public $defaultController = 'users';
     public $defaultAction = 'index';
 
     public static $db = [
