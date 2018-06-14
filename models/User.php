@@ -5,13 +5,14 @@ namespace models;
 
 
 use app\db\ActiveRecord;
+use config\Config;
 
 class User extends ActiveRecord
 {
-    public $id;
-    public $name;
-    public $age;
-    public $city_id;
+    public $id = null;
+    public $name = null;
+    public $age = null;
+    public $city_id = null;
 
     public static $attributes = [
         'id' => 'Id пользователя',
@@ -42,6 +43,10 @@ class User extends ActiveRecord
         }
     }
 
+    /**
+     * Ищем
+     * @return array|bool
+     */
     public function findAll(){
         $query = "select
                     u.id
@@ -50,8 +55,49 @@ class User extends ActiveRecord
                   , u.city_id
                   , c.city
                 from " . self::$tableName . " u
-                left join " . City::$tableName . " c on u.city_id = c.id";
+                left join " . City::$tableName . " c on u.city_id = c.id
+                order by u.id desc limit " . Config::$maxSelectRowLimit ;
         return $this->db->query($query);
+    }
+
+
+    public function save(){
+        if (empty($this->id)) {
+            return $this->_insert();
+        } else {
+            return $this->_update();
+        }
+    }
+
+    /**
+     * Добавляем нового пользователя
+     * @return bool
+     */
+    protected function _insert(){
+        $query = "insert into " . self::$tableName . " (name, age, city_id) values (:name, :age, :city_id)";
+        return $this->db->execute($query, [
+            'name' => $this->name,
+            'age' => $this->age,
+            'city_id' => $this->city_id,
+        ]);
+    }
+
+    /**
+     * Обновлением данные пользователя
+     * @return bool
+     */
+    protected function _update(){
+        $query = "update " . self::$tableName . " set 
+                     name = :name
+                   , age = :age
+                   , city_id = :city_id
+                  where id = :id";
+        return $this->db->execute($query, [
+            'name' => $this->name,
+            'age' => $this->age,
+            'city_id' => $this->city_id,
+            'id' => $this->id
+        ]);
     }
 
 

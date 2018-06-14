@@ -12,6 +12,7 @@ abstract class AppConfig
     public static $rootDir = '';
     public static $viewsDir = '';
     public static $layoutsDir = '';
+    public static $maxSelectRowLimit = 1000;
 
     /**
      * AppConfig constructor.

@@ -11,6 +11,9 @@ class Db {
     private $db;
     protected static $_instance;
 
+    public $lastInsertId = null;
+    protected $errors = [];
+
     private function __construct() {
         $this->db = new PDO(
             "mysql:host=" . Config::$db['host'] .
@@ -28,7 +31,7 @@ class Db {
      * необходимости
      * @return Db
      */
-    public static function getInstance() {
+    public static function getInstance():self {
         if (null === self::$_instance) {
             self::$_instance = new self();
         }
@@ -37,7 +40,7 @@ class Db {
     /**
      * @param $sql - тело запроса
      * @param null $params - массив с параметрами
-     * @return array|string
+     * @return array|bool
      */
     public function query($sql, $params=null){
         try {
@@ -50,16 +53,17 @@ class Db {
             $stmt->execute();
             return $stmt->fetchAll();
         } catch (PDOException $e) {
-            return $e->getMessage() . ":" . $e->getLine();
+            $this->errors[] = $e->getMessage() . ":" . $e->getLine();
+            return false;
         }
     }
     /**
      * Запрос на insert с возвращением последнего вставленного id
      * @param $sql - тело запроса
      * @param null $params - массив с параметрами
-     * @return string
+     * @return bool
      */
-    public function execute($sql, $params=null){
+    public function execute($sql, $params=null):bool{
         try {
             $stmt = $this->db->prepare($sql);
             if (!empty($params)) {
@@ -68,17 +72,24 @@ class Db {
                 }
             }
             $stmt->execute();
-            if ($last_id = $this->db->lastInsertId())
-                return $this->db->lastInsertId();
-            else
-                return 1;
+            if ($this->db->lastInsertId()) $this->lastInsertId = $this->db->lastInsertId();
+            return true;
         } catch (PDOException $e) {
-            return $e->getMessage() . ":" . $e->getLine();
+            $this->errors[] = $e->getMessage() . ":" . $e->getLine();
+            return false;
         }
     }
 
     public function __destruct()
     {
         $this->db = null;
+    }
+
+    /**
+     * Возвращаем массив с ошибками
+     * @return array
+     */
+    public function getErrors(){
+        return $this->errors;
     }
 }

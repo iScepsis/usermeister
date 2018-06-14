@@ -10,10 +10,10 @@ $this->title = "Пользователи";
 <div class="user-wrap">
     <table class="users-table" border="1">
         <thead>
-        <th><?= User::$attributes['id']; ?> </th>
-        <th><?= User::$attributes['name']; ?> </th>
-        <th><?= User::$attributes['age']; ?> </th>
-        <th><?= User::$attributes['city_id']; ?> </th>
+            <th><?= User::$attributes['id']; ?> </th>
+            <th><?= User::$attributes['name']; ?> </th>
+            <th><?= User::$attributes['age']; ?> </th>
+            <th><?= User::$attributes['city_id']; ?> </th>
         </thead>
         <tbody>
         <?php foreach ($users as $user):?>

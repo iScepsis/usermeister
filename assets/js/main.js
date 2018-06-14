@@ -11,3 +11,7 @@ $(document).ready(function () {
         this.val('').val(initialVal);
     };
 })(jQuery);
+
+function urlHelper(route) {
+    return window.location.pathname.replace(/[\w-]+\/[\w-]+\\*$/, route)
+};
