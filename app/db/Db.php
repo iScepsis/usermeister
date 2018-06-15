@@ -65,9 +65,12 @@ class Db {
      */
     public function execute($sql, $params=null):bool{
         try {
+
             $stmt = $this->db->prepare($sql);
+           // $stmt->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
             if (!empty($params)) {
                 foreach ($params as $key => $val) {
+                    if (empty($val)) $val = null;
                     $stmt->bindValue($key, $val);
                 }
             }

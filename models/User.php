@@ -44,7 +44,7 @@ class User extends ActiveRecord
     }
 
     /**
-     * Ищем
+     * Ищем все значения справочника (не превышая лимит $maxSelectRowLimit заданный в конфигурации )
      * @return array|bool
      */
     public function findAll(){
@@ -60,14 +60,6 @@ class User extends ActiveRecord
         return $this->db->query($query);
     }
 
-
-    public function save(){
-        if (empty($this->id)) {
-            return $this->_insert();
-        } else {
-            return $this->_update();
-        }
-    }
 
     /**
      * Добавляем нового пользователя
@@ -87,16 +79,16 @@ class User extends ActiveRecord
      * @return bool
      */
     protected function _update(){
-        $query = "update " . self::$tableName . " set 
-                     name = :name
+        $query = "update " . self::$tableName . " set
+                    name = :name
                    , age = :age
                    , city_id = :city_id
                   where id = :id";
         return $this->db->execute($query, [
+            'id' => $this->id,
             'name' => $this->name,
             'age' => $this->age,
             'city_id' => $this->city_id,
-            'id' => $this->id
         ]);
     }
 
