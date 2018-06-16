@@ -34,7 +34,7 @@ class UsersController extends Controller
         } else {
             return json_encode([
                 'result' => 'false',
-                'errors' => $user->getDbErrors(true)
+                'errors' => $user->getErrors()
             ]);
         };
     }

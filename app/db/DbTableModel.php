@@ -1,13 +1,14 @@
 <?php
-
+/**
+ *
+ */
 
 namespace app\db;
-
 
 use app\mvc\Model;
 use config\Config;
 
-abstract class ActiveRecord extends Model
+abstract class DbTableModel extends Model
 {
     public static $tableName = '';
     public $db;
@@ -37,16 +38,28 @@ abstract class ActiveRecord extends Model
         return $this->db->query("select * from " . static::$tableName . " limit " . Config::$maxSelectRowLimit);
     }
 
+    /**
+     * Добавляем или изменяем запись, в зависимости от ее существования  в БД
+     */
     public function save(){
+        if (!$this->validate()) return false;
         if (empty($this->id)) {
-            return $this->_insert();
+            $result = $this->_insert();
         } else {
-            return $this->_update();
+            $result = $this->_update();
         }
+        if (!$result) $this->errors['db'][] = $this->db->getErrors();
+        return $result;
     }
 
+    /**
+     * Вставляем запись в БД
+     */
     protected function _insert(){}
 
+    /**
+     * Обновляем запись в БД
+     */
     protected function _update(){}
 
     /**
@@ -54,12 +67,12 @@ abstract class ActiveRecord extends Model
      * @param bool $asString - возвращаем как строку
      * @return array|string
      */
-    public function getDbErrors($asString = false){
+    /*public function getDbErrors($asString = false){
         if ($asString) {
             return implode(PHP_EOL, $this->db->getErrors());
         } else {
             return $this->db->getErrors();
         }
 
-    }
+    }*/
 }

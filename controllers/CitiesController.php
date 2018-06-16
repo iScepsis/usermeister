@@ -21,17 +21,17 @@ class CitiesController extends Controller
     }
 
     public function save(){
-        $user = empty($_POST['id']) ? new City() : new City($_POST['id']);
-        $user->load($_POST);
-        if ($user->save()) {
+        $city = empty($_POST['id']) ? new City() : new City($_POST['id']);
+        $city->load($_POST);
+        if ($city->save()) {
             return json_encode([
                 'result' => 'true',
-                'lastInsertId' => $user->db->lastInsertId
+                'lastInsertId' => $city->db->lastInsertId
             ]);
         } else {
             return json_encode([
                 'result' => 'false',
-                'errors' => $user->getDbErrors(true)
+                'errors' => $city->getErrors(true)
             ]);
         }
     }

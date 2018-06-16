@@ -3,6 +3,7 @@ namespace app\core;
 
 
 use app\mvc\Controller;
+use config\Config;
 use controllers\NotFoundController;
 
 class Router
@@ -62,10 +63,11 @@ class Router
      */
     protected static function _getController():Controller {
         $controllerName = "controllers\\" . self::toCamelCase((self::$controller)) . "Controller";
-        if (class_exists($controllerName)) {
+        if (self::checkControllerExists(self::$controller) && class_exists($controllerName)) {
             return new $controllerName;
         } else {
             self::$action = 'index';
+            self::$controller = 'not-found';
             return new NotFoundController();
         }
     }
@@ -119,4 +121,15 @@ class Router
         }
         self::$url = $url;
     }
+
+    /**
+     * Проверяем существует ли файл контроллера в директории controllers
+     * @param string $controllerName
+     * @return bool
+     */
+    protected static function checkControllerExists(string $controllerName){
+        $controllerPath = Config::$rootDir . "/controllers/" . self::toCamelCase(($controllerName)) . "Controller.php";
+        return file_exists($controllerPath);
+    }
+
 }

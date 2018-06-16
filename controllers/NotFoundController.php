@@ -8,7 +8,11 @@ use app\mvc\Controller;
 
 class NotFoundController extends Controller
 {
+    /**
+     * @return string
+     * @throws \Exception
+     */
     public function index(){
-        echo "404!";
+        return $this->render('404');
     }
 }

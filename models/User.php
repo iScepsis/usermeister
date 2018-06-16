@@ -1,14 +1,18 @@
 <?php
-
+/**
+ * Модель для работы с пользователями
+ */
 
 namespace models;
 
 
-use app\db\ActiveRecord;
+use app\db\DbTableModel;
 use config\Config;
 
-class User extends ActiveRecord
+class User extends DbTableModel
 {
+    public static $tableName = 'users';
+
     public $id = null;
     public $name = null;
     public $age = null;
@@ -21,8 +25,24 @@ class User extends ActiveRecord
         'city_id' => 'Город',
     ];
 
-    public static $tableName = 'users';
+    public function validate():bool{
+        if (!preg_match("/^[А-ЯЁ][А-ЯЁa-яё\s-]{2,30}$/", $this->name)) {
+            $this->addValidationError('name', 'Введенное имя не корректно. Имя должно начинаться с большой буквы и может
+             содержать только русские символы, знаки дефиса и пробелы');
+            return false;
+        }
+        if (!preg_match("/^\d{1,3}$/", $this->age) && $this->age < 0 || $this->age > 120) {
+            $this->addValidationError('age', 'Возраст должен быть числом от 1 до 120');
+            return false;
+        }
+        return true;
+    }
 
+    /**
+     * User constructor.
+     * @param int|null $id
+     * @override
+     */
     public function __construct(int $id = null){
         parent::__construct();
 
@@ -46,6 +66,8 @@ class User extends ActiveRecord
     /**
      * Ищем все значения справочника (не превышая лимит $maxSelectRowLimit заданный в конфигурации )
      * @return array|bool
+     * @override
+     *
      */
     public function findAll(){
         $query = "select
@@ -60,10 +82,8 @@ class User extends ActiveRecord
         return $this->db->query($query);
     }
 
-
     /**
-     * Добавляем нового пользователя
-     * @return bool
+     * @override
      */
     protected function _insert(){
         $query = "insert into " . self::$tableName . " (name, age, city_id) values (:name, :age, :city_id)";
@@ -75,8 +95,7 @@ class User extends ActiveRecord
     }
 
     /**
-     * Обновлением данные пользователя
-     * @return bool
+     * @override
      */
     protected function _update(){
         $query = "update " . self::$tableName . " set

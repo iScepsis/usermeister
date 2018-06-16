@@ -1,13 +1,13 @@
 <?php
-
+/**
+ *  Модель для работы с городами
+ */
 
 namespace models;
 
+use app\db\DbTableModel;
 
-use app\db\ActiveRecord;
-use config\Config;
-
-class City extends ActiveRecord
+class City extends DbTableModel
 {
     public static $tableName = "cities";
 
@@ -18,6 +18,15 @@ class City extends ActiveRecord
         'id' => 'Id города',
         'city' => 'Название города',
     ];
+
+    public function validate():bool{
+        if (!preg_match("/^[А-ЯЁ][А-ЯЁa-яё\s-]{2,30}$/", $this->city)) {
+            $this->addValidationError('city', 'Название города не корректно. Название должно начинаться с большой
+             буквы и может содержать  только русские символы, знаки дефиса и пробелы');
+            return false;
+        }
+        return true;
+    }
 
     public function __construct(int $id = null){
         parent::__construct();
@@ -40,8 +49,7 @@ class City extends ActiveRecord
     }
 
     /**
-     * Добавляем нового пользователя
-     * @return bool
+     * @override
      */
     protected function _insert(){
         $query = "insert into " . self::$tableName . " (city) values (:city)";
@@ -51,8 +59,7 @@ class City extends ActiveRecord
     }
 
     /**
-     * Обновлением данные пользователя
-     * @return bool
+     * @override
      */
     protected function _update(){
         $query = "update " . self::$tableName . " set city = :city where id = :id";
