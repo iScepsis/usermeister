@@ -15,8 +15,8 @@ class User extends ActiveRecord
     public $city_id = null;
 
     public static $attributes = [
-        'id' => 'Id пользователя',
-        'name' => 'Имя пользователя',
+        'id' => 'Id',
+        'name' => 'Имя',
         'age' => 'Возраст',
         'city_id' => 'Город',
     ];
@@ -32,7 +32,7 @@ class User extends ActiveRecord
     /**
      * Ищем единственную строку из таблицы по id
      * @param int $id
-     * @return null
+     * @return array|null
      */
     public function findOne(int $id){
         $data = $this->db->query("select * from " . self::$tableName . " where id = :id", ['id' => $id]);
@@ -56,7 +56,7 @@ class User extends ActiveRecord
                   , c.city
                 from " . self::$tableName . " u
                 left join " . City::$tableName . " c on u.city_id = c.id
-                order by u.id desc limit " . Config::$maxSelectRowLimit ;
+                order by u.id limit " . Config::$maxSelectRowLimit ;
         return $this->db->query($query);
     }
 

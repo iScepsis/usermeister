@@ -40,15 +40,6 @@ class City extends ActiveRecord
     }
 
     /**
-     * Ищем все значения справочника (не превышая лимит $maxSelectRowLimit заданный в конфигурации )
-     * @return array|bool
-     */
-    public function findAll(){
-        $query = "select * from " . self::$tableName . " order by city limit " . Config::$maxSelectRowLimit ;
-         return $this->db->query($query);
-    }
-
-    /**
      * Добавляем нового пользователя
      * @return bool
      */

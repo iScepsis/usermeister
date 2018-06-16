@@ -18,20 +18,37 @@ use config\Config;
     <script src="assets/js/main.js"></script>
 </head>
 <body>
-    <header>
-        <aside>
-            <!-- left aside -->
+    <div id="wrap">
+        <aside id="aside">
+            <h1 id="logo-text">Usermeister</h1>
+            <div id="logo">
+                <img src="assets/img/logo.jpg" alt="usermeister" class="center">
+            </div>
+            <ul class="menu">
+                <li>
+                    <a href="index.php/users/index">- Пользователи -</a>
+                </li>
+                <li>
+                    <a href="index.php/cities/index">- Города -</a>
+                </li>
+            </ul>
         </aside>
-        <div>
-            <!-- logo -->
+        <div id="container">
+            <?= $content ?>
         </div>
-        <aside>
-            <!-- right aside -->
-        </aside>
-    </header>
-    <div class="container">
-        <?= $content ?>
     </div>
+
+    <!--<div class="message-wrap">
+
+    </div>
+    <div class="message">
+        <div class="message-body">
+adwfafafwafawfawfwfa
+        </div>
+        <div class="message-footer">
+            <button class="button"> Ок </button>
+        </div>
+    </div>-->
 
 </body>
 </html>

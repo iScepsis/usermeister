@@ -34,7 +34,7 @@ abstract class ActiveRecord extends Model
      * @return array|bool
      */
     public function findAll(){
-        return $this->db->query("select * from " . self::$tableName . " limit " . Config::$maxSelectRowLimit);
+        return $this->db->query("select * from " . static::$tableName . " limit " . Config::$maxSelectRowLimit);
     }
 
     public function save(){

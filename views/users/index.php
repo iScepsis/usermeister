@@ -8,13 +8,18 @@ $this->title = "Пользователи";
  * @var $cities array
  */
 ?>
+
+<h1 class="text-center">Список пользователей</h1>
+
+<br>
+
 <div class="user-wrap">
-    <table class="users-table" border="1">
+    <table class="users-table">
         <thead>
-            <th><?= User::$attributes['id']; ?></th>
-            <th><?= User::$attributes['name']; ?></th>
-            <th><?= User::$attributes['age']; ?></th>
-            <th><?= User::$attributes['city_id']; ?></th>
+            <th style="width:12%"><?= User::$attributes['id']; ?></th>
+            <th style="width:38%"><?= User::$attributes['name']; ?></th>
+            <th style="width:12%"><?= User::$attributes['age']; ?></th>
+            <th style="width:38%"><?= User::$attributes['city_id']; ?></th>
         </thead>
         <tbody>
         <?php foreach ($users as $user):?>
@@ -30,9 +35,11 @@ $this->title = "Пользователи";
         </tbody>
     </table>
 
-    <div>
-        <button class="add-user">
-            Добавить пользователя
+    <br>
+
+    <div class="text-center">
+        <button class="button add-user">
+            + Добавить пользователя
         </button>
     </div>
 </div>
