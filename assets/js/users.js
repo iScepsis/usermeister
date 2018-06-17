@@ -1,10 +1,10 @@
 var UserProto = {
     id: '',
     name: '',
-    age: '',
+    age: 0,
     city_id: '',
     _row: null,
-    _clientValidation: false,
+    _clientValidation: true,
     /**
      * Валидируем свойства объекта
      * @returns {boolean}
@@ -16,7 +16,7 @@ var UserProto = {
             flag = false;
         }
 
-        if (!/^\d{1,3}$/.test(this.age) || this.age < 0 || this.age > 120) {
+        if (isNaN(this.age) || this.age < 0 || this.age > 120) {
             this.markAsInvalid('age');
             flag = false;
         }
@@ -172,7 +172,7 @@ $(document).ready(function(){
                 '<td class="user-id"></td>' +
                 '<td class="user-name i-input">Имя</td>' +
                 '<td class="user-age i-input">Возраст</td>' +
-                '<td class="user-city i-city-select" data-city_id="">Город не установлен</td>' +
+                '<td class="user-city i-city-select" data-city_id="">Город не выбран</td>' +
             '</tr>'
         );
     });

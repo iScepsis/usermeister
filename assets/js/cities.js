@@ -7,7 +7,7 @@ var CityProto = {
     id: '',
     city: '',
     _row: null,
-    _clientValidation: false,
+    _clientValidation: true,
     /**
      * Валидируем свойства объекта
      * @returns {boolean}
