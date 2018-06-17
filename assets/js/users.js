@@ -13,7 +13,7 @@ function User(row, id, name, age, city_id) {
      */
         this.validate = function () {
             var flag = true;
-            if (!/^[А-ЯЁ][А-ЯЁa-яё\s-]{2,30}$/.test(this.name)) {
+            if (!/^[А-ЯЁ][А-ЯЁa-яё\s-]{2,29}$/.test(this.name)) {
                 this.markAsInvalid('name');
                 flag = false;
             }

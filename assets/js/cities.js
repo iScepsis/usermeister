@@ -9,7 +9,7 @@ function City(row, id, city) {
      */
         this.validate = function () {
             var flag = true;
-            if (!/^[А-ЯЁ][А-ЯЁa-яё\s-]{2,30}$/.test(this.city)) {
+            if (!/^[А-ЯЁ][А-ЯЁa-яё\s-]{2,29}$/.test(this.city)) {
                 this.markAsInvalid('city');
                 flag = false;
             }

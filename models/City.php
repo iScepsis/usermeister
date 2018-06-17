@@ -29,7 +29,7 @@ class City extends DbTableModel
                 return false;
             }
         }
-        if (!preg_match("/^[А-ЯЁ][А-ЯЁa-яё\s-]{2,30}$/", $this->city)) {
+        if (!preg_match("/^[А-ЯЁ][А-ЯЁa-яё\s-]{2,29}$/", $this->city)) {
             $this->addValidationError('city',
                 'Название города должно начинаться с заглавной буквы и может содержать только русские символы, знаки дефиса и пробелы');
             return false;
