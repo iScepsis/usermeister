@@ -28,7 +28,7 @@ $this->title = "Пользователи";
                 <td class="user-name i-input"><?= $user['name'] ?></td>
                 <td class="user-age i-input"><?= $user['age'] ?></td>
                 <td class="user-city i-city-select" data-city_id="<?= $user['city_id'] ?>">
-                    <?= $user['city'] ?? '<span class="muted">Город не выбран</span>' ?>
+                    <?= $user['city'] ?? 'Город не выбран' ?>
                 </td>
             </tr>
         <?php endforeach; ?>
@@ -43,7 +43,6 @@ $this->title = "Пользователи";
         </button>
     </div>
 </div>
-
 
 <script type="text/javascript">var cities=<?=json_encode($cities)?></script>
 <script src="assets/js/users.js" type="text/javascript"></script>

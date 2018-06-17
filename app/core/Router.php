@@ -93,6 +93,7 @@ class Router
     protected static function _parseUri():void{
         //Парсим pretty Url
         $url = [];
+        $url['hostName'] = $_SERVER['REQUEST_SCHEME'] . '://' . $_SERVER['HTTP_HOST'];
         $requestPath = explode('?', $_SERVER['REQUEST_URI']);
         $url['base'] = trim(dirname($_SERVER['SCRIPT_NAME']), '\/');
         $url['call'] = substr(urldecode($requestPath[0]), strlen($url['base']) + 1);
