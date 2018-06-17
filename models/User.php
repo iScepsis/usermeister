@@ -27,8 +27,10 @@ class User extends DbTableModel
 
     public function validate():bool{
         if (!preg_match("/^[А-ЯЁ][А-ЯЁa-яё\s-]{2,30}$/", $this->name)) {
-            $this->addValidationError('name', 'Введенное имя не корректно. Имя должно начинаться с большой буквы и может
-             содержать только русские символы, знаки дефиса и пробелы');
+            $this->addValidationError(
+                'name',
+                'Имя должно начинаться с большой буквы и может содержать только русские символы, знаки дефиса и пробелы'
+            );
             return false;
         }
         if (!preg_match("/^\d{1,3}$/", $this->age) && $this->age < 0 || $this->age > 120) {

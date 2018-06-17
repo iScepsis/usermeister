@@ -21,8 +21,8 @@ class City extends DbTableModel
 
     public function validate():bool{
         if (!preg_match("/^[А-ЯЁ][А-ЯЁa-яё\s-]{2,30}$/", $this->city)) {
-            $this->addValidationError('city', 'Название города не корректно. Название должно начинаться с большой
-             буквы и может содержать  только русские символы, знаки дефиса и пробелы');
+            $this->addValidationError('city',
+                'Название города должно начинаться с заглавной буквы и может содержать только русские символы, знаки дефиса и пробелы');
             return false;
         }
         return true;

@@ -14,7 +14,10 @@ abstract class Model
     /**
      * @var array - массив для складирования ошибок при валидации, сохранении в БД и т.п.
      */
-    public $errors = [];
+    public $errors = [
+        'db' => [],
+        'validation' => [],
+    ];
 
     public function validate():bool{
         return true;
@@ -25,6 +28,9 @@ abstract class Model
     }
 
     public function addValidationError(string $field, $message):void{
-        $this->errors['validation'][$field][] = $message;
+        if (empty($this->errors['validation'][$field])) {
+            $this->errors['validation'][$field] = [];
+        }
+        $this->errors['validation'][$field]['invalidMessage'] = $message;
     }
 }

@@ -4,6 +4,7 @@ var UserProto = {
     age: '',
     city_id: '',
     _row: null,
+    _clientValidation: false,
     /**
      * Валидируем свойства объекта
      * @returns {boolean}
@@ -11,45 +12,62 @@ var UserProto = {
     validate: function () {
         var flag = true;
         if (!/^[А-ЯЁ][А-ЯЁa-яё\s-]{2,30}$/.test(this.name)) {
-            $(this._row).find('.user-name').addClass('invalid');
-            alert('Введенное имя не корректно. Имя должно начинаться с большой буквы и может содержать только русские' +
-                'символы, знаки дефиса и пробелы');
+            this.markAsInvalid('name');
             flag = false;
         }
 
         if (!/^\d{1,3}$/.test(this.age) || this.age < 0 || this.age > 120) {
-            $(this._row).find('.user-age').addClass('invalid');
-            alert('Возраст должен быть числом от 1 до 120');
+            this.markAsInvalid('age');
             flag = false;
         }
         if (flag) {
-            $(this._row).find('.invalid').removeClass('invalid');
+            this.unmarkInvalids()
         }
         return flag;
     },
     save: function(){
-        if (this.validate()) {
-            $.ajax({
-                url: 'index.php/users/save',
-                type: "POST",
-                data: {
-                    id: this.id,
-                    name: this.name,
-                    age: this.age,
-                    city_id: this.city_id
-                },
-                dataType: 'json',
-                success: function (data) {
-                    if (data['result'] == 'true') {
-                        if (data['lastInsertId'] !== null) {
-                            var new_row = $('.new-row');
-                            new_row.find('.user-id').text(data['lastInsertId']);
-                            new_row.removeClass('new-row');
+        if (this._clientValidation && !this.validate()) return false;
+        var that = this;
+        $.ajax({
+            url: 'index.php/users/save',
+            type: "POST",
+            data: {
+                id: this.id,
+                name: this.name,
+                age: this.age,
+                city_id: this.city_id
+            },
+            dataType: 'json',
+            success: function (data) {
+                if (data['result'] == 'true') {
+                    if (data['lastInsertId'] !== null) {
+                        $(that._row).find('.user-id').text(data['lastInsertId']);
+                        $(that._row).removeClass('new-row');
+                        that.unmarkInvalids();
+                    }
+                } else if(data['result'] == 'false') {
+                    if (Object.keys(data['errors']['validation']).length > 0) {
+                        var e = data['errors']['validation'];
+                        for (var i in e) {
+                            that.markAsInvalid(i, e[i]['invalidMessage']);
                         }
                     }
                 }
-            });
-        }
+            }
+        });
+    },
+    markAsInvalid: function(field, message){
+        $(this._row).find('.user-' + field).addClass('invalid');
+        message = message || this.invalidMessages[field];
+        alert(message);
+    },
+    unmarkInvalids: function(){
+        $(this._row).find('.invalid').removeClass('invalid');
+    },
+    invalidMessages: {
+        name: 'Введенное имя не корректно. Имя должно начинаться с большой буквы и может содержать только русские' +
+        'символы, знаки дефиса и пробелы',
+        age: 'Возраст должен быть числом от 1 до 120',
     }
 }
 

@@ -1,7 +1,13 @@
+/**
+ * Прототип для валидации и сохранения города
+ * @type {{id: string, city: string, _row: null, validate: (function(): boolean), save: CityProto.save}}
+ */
+
 var CityProto = {
     id: '',
     city: '',
     _row: null,
+    _clientValidation: false,
     /**
      * Валидируем свойства объекта
      * @returns {boolean}
@@ -9,37 +15,58 @@ var CityProto = {
     validate: function () {
         var flag = true;
         if (!/^[А-ЯЁ][А-ЯЁa-яё\s-]{2,30}$/.test(this.city)) {
-            $(this._row).find('.city-city').addClass('invalid');
-            alert('Название города не корректно. Название должно начинаться с большой буквы и может содержать ' +
-                'только русские символы, знаки дефиса и пробелы');
+            this.markAsInvalid('city');
             flag = false;
         }
         if (flag) {
-            $(this._row).find('.invalid').removeClass('invalid');
+            this.unmarkInvalids()
         }
         return flag;
     },
+    /**
+     * Сохранение изменений
+     */
     save: function(){
-        if (this.validate()) {
-            $.ajax({
-                url: 'index.php/cities/save',
-                type: "POST",
-                data: {
-                    id: this.id,
-                    city: this.city,
-                },
-                dataType: 'json',
-                success: function (data) {
-                    if (data['result'] == 'true') {
-                        if (data['lastInsertId'] !== null) {
-                            var new_row = $('.new-row');
-                            new_row.find('.city-id').text(data['lastInsertId']);
-                            new_row.removeClass('new-row');
+        if (this._clientValidation && !this.validate()) return false;
+        var that = this;
+        $.ajax({
+            url: 'index.php/cities/save',
+            type: "POST",
+            data: {
+                id: this.id,
+                city: this.city,
+            },
+            dataType: 'json',
+            success: function (data) {
+                if (data['result'] == 'true') {
+                    if (data['lastInsertId'] !== null) {
+                        $(that._row).find('.city-id').text(data['lastInsertId']);
+                        $(that._row).removeClass('new-row');
+                        that.unmarkInvalids();
+                    }
+                } else if(data['result'] == 'false') {
+                    if (Object.keys(data['errors']['validation']).length > 0) {
+                        var e = data['errors']['validation'];
+                        for (var i in e) {
+                            that.markAsInvalid(i, e[i]['invalidMessage']);
                         }
                     }
                 }
-            });
-        }
+            }
+        });
+
+    },
+    markAsInvalid: function(field, message){
+        $(this._row).find('.city-' + field).addClass('invalid');
+        message = message || this.invalidMessages[field];
+        alert(message);
+    },
+    unmarkInvalids: function(){
+        $(this._row).find('.invalid').removeClass('invalid');
+    },
+    invalidMessages: {
+        city: 'Название города не корректно. Название должно начинаться с большой буквы и может содержать ' +
+        'только русские символы, знаки дефиса и пробелы'
     }
 }
 
