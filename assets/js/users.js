@@ -164,7 +164,7 @@ $(document).ready(function () {
             '<tr class="user-row new-row">' +
             '<td class="user-id"></td>' +
             '<td class="user-name i-input">Имя</td>' +
-            '<td class="user-age i-input">Возраст</td>' +
+            '<td class="user-age i-input">0</td>' +
             '<td class="user-city i-city-select" data-city_id="">Город не выбран</td>' +
             '</tr>'
         );
