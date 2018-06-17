@@ -20,6 +20,15 @@ class City extends DbTableModel
     ];
 
     public function validate():bool{
+        if (empty($this->id)) {
+            $row = $this->db->query('select id from ' . self::$tableName . ' where city = trim(:city)', [
+               'city' => $this->city
+            ]);
+            if (!empty($row)) {
+                $this->addValidationError('city', 'Город с таким названием уже существует');
+                return false;
+            }
+        }
         if (!preg_match("/^[А-ЯЁ][А-ЯЁa-яё\s-]{2,30}$/", $this->city)) {
             $this->addValidationError('city',
                 'Название города должно начинаться с заглавной буквы и может содержать только русские символы, знаки дефиса и пробелы');
@@ -28,6 +37,10 @@ class City extends DbTableModel
         return true;
     }
 
+    /**
+     * City constructor.
+     * @param int|null $id
+     */
     public function __construct(int $id = null){
         parent::__construct();
 
